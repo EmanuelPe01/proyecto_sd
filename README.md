@@ -1,6 +1,6 @@
-# Proyecto de Sistemas distribuidos
+# Proyecto de Sistemas distribuidos (CloudFit)
 
-Este repositorio contiene el código fuente y la documentación del proyecto Nombre del Proyecto.
+Este repositorio contiene el código fuente y la documentación del proyecto CloudFit.
 
 ## Instalación de los paquetes necesarios
 
