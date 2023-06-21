@@ -4,7 +4,7 @@ Este repositorio contiene el código fuente y la documentación del proyecto Clo
 
 ## Instalación de los paquetes necesarios 
 
-Antes de comenzar es necesario tener todas los componentes necesario para la configuracion de la maquina virtual
+Antes de comenzar es necesario tener todos los componentes necesario para la configuracion de la maquina virtual
 
     sudo apt-get install nginx
     sudo apt-get install python3-venv
