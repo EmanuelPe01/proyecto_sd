@@ -35,7 +35,7 @@ Sigue estos pasos para preparar el entorno virtual:
 
 A continuación, se deben instalar los paquetes necesarios para el proyecto Django:
 
-    pip install scikit-learn django djangorestframework djangorestframework-simplejwt django-model-utils mysqlclient gunicorn
+    pip install scikit-learn django djangorestframework djangorestframework-simplejwt django-model-utils mysqlclient gunicorn django-cors-headers
     
 ## Migración de la base de datos
 Si tienes un archivo SQL de la base de datos llamado "sql_db.sql", puedes importarlo a MySQL con el siguiente comando:
