@@ -20,7 +20,7 @@ Sigue estos pasos para preparar el entorno virtual:
 1. Instala la herramienta venv para crear entornos virtuales
 
    ```bash
-   pip install venv
+   pip install virtualenv
 
 2. Crea un entorno virtual llamado "nombre-env" (reemplaza "nombre-env" por el nombre deseado):
 
