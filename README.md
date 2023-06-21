@@ -2,17 +2,13 @@
 
 Este repositorio contiene el código fuente y la documentación del proyecto CloudFit.
 
-## Instalación de los paquetes necesarios
+## Instalación de los paquetes necesarios 
 
-Antes de comenzar, asegúrate de tener acceso de administrador en tu sistema. A continuación, se detallan los pasos para instalar los paquetes necesarios en un entorno de desarrollo de Django.
+Antes de comenzar es necesario tener todas los componentes necesario para la configuracion de la maquina virtual
 
-    sudo apt update
-    sudo apt upgrade
-    sudo apt install apache2 
-    sudo apt install apache2-dev
-    sudo apt install libapache2-mod-wsgi-py3
-    sudo apt install python3-pip python3-dev libpq-dev
-    sudo apt install libmysqlclient-dev
+    sudo apt-get install nginx
+    sudo apt-get install python3-venv
+    sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
 
 ## Preparación del entorno virtual
 Sigue estos pasos para preparar el entorno virtual:
@@ -21,23 +17,26 @@ Sigue estos pasos para preparar el entorno virtual:
 
    ```bash
    pip install virtualenv
+   ```
 
 2. Crea un entorno virtual llamado "nombre-env" (reemplaza "nombre-env" por el nombre deseado):
 
    ```bash
     python -m venv nombre-env
+    ```
 
 3. Activa el entorno virtual:
 
     ```bash
     source nombre-env/bin/activate
+    ```
 
 ## Instalación de paquetes necesarios
 
 A continuación, se deben instalar los paquetes necesarios para el proyecto Django:
 
-    pip install scikit-learn django djangorestframework djangorestframework-simplejwt django-model-utils mysqlclient
-
+    pip install scikit-learn django djangorestframework djangorestframework-simplejwt django-model-utils mysqlclient gunicorn
+    
 ## Migración de la base de datos
 Si tienes un archivo SQL de la base de datos llamado "sql_db.sql", puedes importarlo a MySQL con el siguiente comando:
 
@@ -45,23 +44,56 @@ Si tienes un archivo SQL de la base de datos llamado "sql_db.sql", puedes import
 
 Asegúrate de reemplazar "nombre_usuario" con tu nombre de usuario de MySQL; proyecto no se cambia.
 
-## Ejecución del servidor
+## Configuracion del servidor de desarrollo
 
-Finalmente, para ejecutar el servidor de desarrollo de Django, utiliza el siguiente comando:
+Crear un archivo de configuración para gunicorn:
 
-    ./manage.py runserver 127.0.0.1:8005
+    mkdir conf
+    sudo nano conf/gunicorn_config.py
+
+Dentro del archivo copiar y ajustar lo siguiente: 
+ ```python 
+command = '/ruta/a/entorno/vitual/bin/gunicorn'
+pythonpath = '/ruta/del/proyecto/proyecto_sd'
+bind = '0.0.0.0:8000'
+wokers = 3
+ ```
+
+Comando para ejecutar gunicorn con django:
+
+    gunicorn -c conf/gunicorn_config.py proyecto_sd.wsgi
+
+Hacer ```Ctrl + z``` para que se ejecute en segundo plano
+
+## Configuración de servidor local 
+Iniciar nginx
+    sudo systemctl start nginx
+
+Archivo de configuración para comunicacion entre nginx y gunicorn:
+
+    sudo nano /etc/nginx/sites-available/proyecto_sd
     
-## Ingreso al sitio web
+Dentro del archivo, ajustar lo siguiente:
+```python
+server {
+    listen 80;
+    server_name direccion_gateway;
+    location / {
+    	proxy_pass http://0.0.0.0:8000;
+    }
+}
+```
+Cambiar de directorio para activar la configuración: 
 
-1. Es necesario copiar la carpeta views/ a /var/www/html
+    cd /etc/nginx/sites-enabled
 
-    ```bash 
-    cd -r views/ /var/www/html/
+Activación de la configuracion: 
 
-2. Además de cambiar el puerto del servidor local a 8080
-    ```bash
-    sudo nano /etc/apache2/ports.conf
+    sudo ln -s /etc/nginx/sites-available/proyecto_sd
 
-3. Modificar la linea que contiene "Listen 80" y colocar "Listen 8080"
-4. Una vez hecho todo esto, ingresar al localhost mediante un navegador web
+Reiniciar servidor:
+
+    sudo systemctl restart nginx
+
+Ingresar al ip que se configuró como gateway para verificar que la configuración fue correcta
 
